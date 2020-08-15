@@ -1,0 +1,80 @@
+{% extends "comp/layout.html" %}
+
+{% block title %}
+  urban_comp
+{% endblock %}
+
+{% block heading %}
+  Main Page
+{% endblock %}
+
+{% block body %}
+<div>
+
+  <!–– Display all licence plates -->
+  <div class="table-responsive">
+    <table class="table">
+      <caption>List of licence plates</caption>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Licence Plate </th>
+      <th scope="col">Insurance</th>
+      <th scope="col">Address</th>
+      <th scope="col">Created date</th>
+      <th scope="col">Last updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for licence in licencePlates %}
+    <tr>
+      <th scope="row">{{ licence.licence_plate_id }}</th>
+          <td><a href="{% url 'comp:getPlate' licence.licence_plate %}"> {{ licence.licence_plate }}</a></td>
+          <td>{{ licence.insurance }}</td>
+          <td>{{ licence.address }}</td>
+          <td>{{ licence.created_at }}</td>
+          <td>{{ licence.updated_at }}</td>
+      </tr>
+      {% empty %}
+        <li>No licence plates.</li>
+    {% endfor %}
+    </table>
+  </div>
+
+  <!–– Display all complaints -->
+  <div class="table-responsive">
+    <table class="table">
+      <caption>List of complaints</caption>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Description</th>
+      <th scope="col">Created date</th>
+      <th scope="col">Last updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for complaint in complaints %}
+    <tr>
+      <th scope="row">{{ complaint.complaint_id }}</th>
+          <td>{{ complaint.description }}</td>
+          <td>{{ complaint.created_at }}</td>
+          <td>{{ complaint.updated_at }}</td>
+      </tr>
+      {% empty %}
+        <td>No complaints.</td>
+    {% endfor %}
+    </table>
+  </div>
+
+  <!–– Create a new complaint-->
+  <form action="{% url 'comp:addComplaint' %}" method="post">
+    {% csrf_token %}
+      <div class="col-lg-6 col-sm-12 form-group">
+        <input name="description" type="text" placeholder="Describe bayul" >
+        <input type="submit">
+      </div>
+  </form>
+
+  <div>
+{% endblock %}
